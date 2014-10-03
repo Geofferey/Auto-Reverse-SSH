@@ -7,10 +7,5 @@ Description: Forwards a port automatically on startup using autossh
 Author: Geofferey <2wyte.infinity@gmail.com>
 Section: Networking
 dev: 2wyteinfinity
-Installed-Size: 4.2
+Installed-Size: 4
 Tag: purpose::console
-
-
-
-
-

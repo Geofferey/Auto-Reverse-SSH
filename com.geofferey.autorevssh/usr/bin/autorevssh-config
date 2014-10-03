@@ -88,5 +88,3 @@ echo ""
 rm /etc/ssh/reverse_ssh_key 2>/dev/null; cp "$PRIKEYLOC" /etc/ssh/reverse_ssh_key; chmod 400 /etc/ssh/reverse_ssh_key; echo "done"
 
 echo ""
-
-
