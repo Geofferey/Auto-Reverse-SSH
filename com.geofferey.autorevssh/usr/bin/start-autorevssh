@@ -1,0 +1,61 @@
+#!/bin/sh
+
+. /etc/ssh/autorevssh.conf
+
+if [[ $(find /etc/ssh/autorevssh.conf -type f -size +240c 2>/dev/null) ]]; then
+
+export HOME=/var/root
+export AUTOSSH_GATETIME=0
+
+ssh -T -i /etc/ssh/reverse_ssh_key "$REMUSER"@"$REMSERV" -p "$REMSERVPORT" ssh localhost -p "$REVPORT" -y 2>/dev/null
+
+autossh -g -f -N -C -M 0 -R *:"$REVPORT":localhost:"$PORT" "$REMUSER"@"$REMSERV" -p "$REMSERVPORT" -y -i /etc/ssh/reverse_ssh_key
+
+while true; do
+if ifconfig en0 | grep -q inet; then INTERFACE=en0
+elif 
+ifconfig pdp_ip0 | grep -q inet; then INTERFACE=pdp_ip0
+else 
+INTERFACE=
+fi
+
+if [[ $INTERFACE ]]; then
+while ifconfig $INTERFACE |grep -q inet; do 
+if ! ps -x -u root |grep -q [a]utossh; then
+autossh -g -f -N -C -M 0 -R *:"$REVPORT":localhost:"$PORT" "$REMUSER"@"$REMSERV" -p "$REMSERVPORT" -y -i /etc/ssh/reverse_ssh_key
+fi
+sleep 7
+done
+fi
+
+while ! ifconfig en0 |grep -q inet && ! ifconfig pdp_ip0 |grep -q inet; do
+if ! ps -x -u root |grep -q [a]utossh; then
+echo restarting
+autossh -g -f -N -C -M 0 -R *:"$REVPORT":localhost:"$PORT" "$REMUSER"@"$REMSERV" -p "$REMSERVPORT" -y -i /etc/ssh/reverse_ssh_key
+fi
+sleep 7
+done
+
+sleep 10;
+killall -u root autossh 2>/dev/null
+
+if ps -x -u root |grep -q [a]utossh; then
+killall -9 -u root autossh 2>/dev/null
+fi;
+
+killall -u root ssh 2>/dev/null;
+
+if ps -x -u root |grep -q [s]sh; then
+killall -9 -u root ssh 2>/dev/null
+fi;
+
+sleep 5;
+
+ssh -T -i /etc/ssh/reverse_ssh_key "$REMUSER"@"$REMSERV" -p "$REMSERVPORT" ssh localhost -p "$REVPORT" -y 2>/dev/null;
+
+autossh -g -f -N -C -M 0 -R *:"$REVPORT":localhost:"$PORT" "$REMUSER"@"$REMSERV" -p "$REMSERVPORT" -y -i /etc/ssh/reverse_ssh_key 
+done
+
+else
+exit 0
+fi

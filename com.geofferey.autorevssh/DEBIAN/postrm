@@ -1,0 +1,16 @@
+#!/bin/sh
+
+echo "Backing up /etc/ssh/autorevssh.conf to"
+echo ""
+echo "/var/root/AutoRevSSH"
+echo ""
+echo "&" 
+echo ""
+echo "killing autossh if any"
+
+if [[ $(find /tmp/autorevssh.conf 2>/dev/null) ]]; then
+mkdir /var/root/AutoRevSSH
+mv /tmp/autorevssh.conf /var/root/AutoRevSSH/autorevssh.conf
+fi
+
+killall autossh || true

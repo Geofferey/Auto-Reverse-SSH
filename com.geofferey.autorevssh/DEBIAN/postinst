@@ -1,0 +1,79 @@
+#!/bin/sh
+
+echo "Auto Reverse SSH for iOS"
+echo ""
+echo "Based on PDSSHD for Android on XDA"
+
+chmod 755 usr/bin/autorevssh-config
+chmod 755 /usr/bin/start-autorevssh
+chmod 644 /Library/LaunchDaemons/com.geofferey.autorevssh.plist
+chmod 644 /etc/ssh/autorevssh.conf
+
+if [[ $(find /var/root/AutoRevSSH/autorevssh.conf 2>/dev/null) ]]; then 
+echo ""
+echo "Restoring configuration from backup" 
+mv /var/root/AutoRevSSH/autorevssh.conf /tmp/autorevssh.conf
+rm -r /var/root/AutoRevSSH
+fi 
+
+if [[ $(find /tmp/autorevssh.conf 2>/dev/null) ]]; then
+rm /etc/ssh/autorevssh.conf
+mv /tmp/autorevssh.conf /etc/ssh/autorevssh.conf
+chmod 644 /etc/ssh/autorevssh.conf
+fi
+
+if [[ $(find /etc/ssh/autorevssh.conf -type f -size +238c 2>/dev/null) ]]; then
+echo ""
+echo "Looks like you have configured me before..."
+
+sleep 1
+
+echo ""
+
+echo "We are go for launch!"
+echo "In......"
+echo "5....."; sleep 1
+echo "4...."; sleep 1
+echo "3..."; sleep 1
+echo "2.."; sleep 1
+echo "1."; sleep 1 
+echo "LIFT OFF!"
+
+echo ""
+echo "That was fun huh?"
+
+
+launchctl load -w /Library/LaunchDaemons/com.geofferey.autorevssh.plist
+
+else 
+
+echo ""
+
+echo "You must run 'autorevssh-config' for this to function!"
+
+sleep 1
+
+echo ""
+
+echo "Step 1: run 'autorevssh-config' in terminal"
+
+echo ""
+
+sleep 1
+
+echo "Step 2: fill out required info & supply your private key"
+
+echo ""
+
+sleep 1
+
+echo "Step 3: run start-autorevssh or reboot & prosper"
+
+echo ""
+
+echo "done"
+
+sleep 5
+fi
+
+exit 0

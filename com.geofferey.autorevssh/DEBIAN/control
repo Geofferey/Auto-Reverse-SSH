@@ -1,0 +1,16 @@
+Package: com.geofferey.autoreversessh
+Depends: autossh, openssh, coreutils, adv-cmds
+Name: Auto Reverse SSH
+Version: 1.4
+Architecture: iphoneos-arm
+Description: Forwards a port automatically on startup using autossh
+Author: Geofferey <2wyte.infinity@gmail.com>
+Section: Networking
+dev: 2wyteinfinity
+Installed-Size: 4.2
+Tag: purpose::console
+
+
+
+
+

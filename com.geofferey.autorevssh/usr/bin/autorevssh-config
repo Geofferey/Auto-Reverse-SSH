@@ -1,0 +1,92 @@
+#!/bin/sh 
+
+. /etc/ssh/autorevssh.conf
+
+echo ""
+
+echo "---CONFIGURE-REVERSE-SSH---"
+
+echo ""
+
+read -p "Enter local port: " NEWPORT
+if test "$NEWPORT" = ""; then
+echo "DEFAULT PORT #22"; sed -i -e"s/^PORT=.*/PORT=22/" /etc/ssh/autorevssh.conf 
+else
+sed -i -e"s/^PORT=.*/PORT=$NEWPORT/" /etc/ssh/autorevssh.conf 
+fi
+
+if test $? -eq 0; then
+echo "port set"
+else 
+echo "write attempt failed!"
+fi 
+
+echo ""
+
+read -p "Enter reverse listen port: " NEWREVPORT
+if test "$NEWREVPORT" = ""; then
+echo "DEFAULT IS BLANK"; sed -i -e"s/^REVPORT=.*/REVPORT=/" /etc/ssh/autorevssh.conf 
+else
+sed -i -e"s/^REVPORT=.*/REVPORT=$NEWREVPORT/" /etc/ssh/autorevssh.conf 
+fi
+
+if test $? -eq 0; then
+echo "port set"
+else 
+echo "write attempt failed!"
+fi
+
+echo ""
+
+read -p "Enter remote server: " NEWREMSERV
+if test "$NEWREMSERV" = ""; then
+echo "DEFAULT IS BLANK"; sed -i -e"s/^REMSERV=.*/REMSERV=/" /etc/ssh/autorevssh.conf 
+else
+sed -i -e"s/^REMSERV=.*/REMSERV=$NEWREMSERV/" /etc/ssh/autorevssh.conf 
+fi
+
+if test $? -eq 0; then
+echo "server set"
+else 
+echo "write attempt failed!"
+fi
+
+echo ""
+
+read -p "Enter remote serv port: " NEWREMSERVPORT
+if test "$NEWREMSERVPORT" = ""; then
+echo "DEFAULT IS 22"; sed -i -e"s/^REMSERVPORT=.*/REMSERVPORT=22/" /etc/ssh/autorevssh.conf 
+else
+sed -i -e"s/^REMSERVPORT=.*/REMSERVPORT=$NEWREMSERVPORT/" /etc/ssh/autorevssh.conf
+fi
+
+if test $? -eq 0; then
+echo "port set"
+else 
+echo "write attempt failed!"
+fi
+
+echo ""
+
+read -p "Enter remote username: " NEWREMUSER
+if test "$NEWREMUSER" = ""; then
+echo "DEFAULT IS BLANK"; sed -i -e"s/^REMUSER=.*/REMUSER=/" /etc/ssh/autorevssh.conf 
+else
+sed -i -e"s/^REMUSER=.*/REMUSER=$NEWREMUSER/" /etc/ssh/autorevssh.conf 
+fi
+
+if test $? -eq 0; then
+echo "username set"
+else 
+echo "write attempt failed!"
+fi
+
+echo ""
+
+read -p "Enter path to private key: "  PRIKEYLOC
+echo ""
+rm /etc/ssh/reverse_ssh_key 2>/dev/null; cp "$PRIKEYLOC" /etc/ssh/reverse_ssh_key; chmod 400 /etc/ssh/reverse_ssh_key; echo "done"
+
+echo ""
+
+
